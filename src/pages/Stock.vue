@@ -7,12 +7,13 @@
     </header>
     <div>
       <VueApexCharts
-      width="1000"
+      width="1200"
       type="candlestick"
       :options="chartOptions"
       :series="series"
       ></VueApexCharts>
     </div>
+    <p id="error-message">{{ message }}</p>
   </div>
 </template>
 
@@ -23,6 +24,7 @@ import VueApexCharts from "vue3-apexcharts";
 const searchTerm = ref('');
 const chartOptions = ref({});
 const series = ref([]);
+const message = ref('');
 
 // Function to fetch stock data
 const fetchStockData = async () => {
@@ -37,7 +39,7 @@ const fetchStockData = async () => {
       chartOptions.value = {
         chart: {
           type: 'candlestick',
-          height: 350
+          height: 600
         },
         title: {
           text: `${searchTerm.value} Stock Prices`
@@ -53,12 +55,14 @@ const fetchStockData = async () => {
       };
       series.value = [{
         data: data.map(elm => {
-          return { x : Date.parse(elm.date), y: [elm.open, elm.high, elm.low, elm.close] }
+          return { x : new Date(Date.parse(elm.date).getTime()), y: [elm.open, elm.high, elm.low, elm.close] }
         })
       }];
+      message.value = '';
     });
   } catch (err) {
       console.log('bad stock symbol');
+      message.value = data.message;
   } 
 };
 </script>
@@ -91,9 +95,14 @@ button {
   border: none;
   border-radius: 4px;
   cursor: pointer;
-}
+} 
 
 button:hover {
   background-color: #45a049;
+}
+
+#error-message {
+  color: red;
+  font-weight: bold;
 }
 </style>
