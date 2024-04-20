@@ -1,5 +1,7 @@
 <script setup>
 import Nav from "./components/nav.vue"
+import { authUserStore } from "./stores";
+authUserStore().Login();
 </script>
 
 <template>
