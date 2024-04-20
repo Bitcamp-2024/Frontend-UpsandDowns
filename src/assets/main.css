@@ -2,14 +2,14 @@
 
 a, .purple {
   text-decoration: none;
-  color: #7c3aed;
+  color: #ffff;
   transition: 0.4s;
   padding: 3px;
 }
 
 @media (hover: hover) {
   a:hover {
-    background-color: hsla(160, 100%, 37%, 0.2);
+    color: #7c3aed;
   }
 }
 

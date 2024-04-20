@@ -19,7 +19,7 @@ const searchTerm = ref('');
 // Function to fetch stock data
 const fetchStockData = async () => {
   try {
-    const response = await axios.get(`https://query2.finance.yahoo.com/v7/finance/quote?symbols=${searchTerm.value}&crumb=eQn8OD172r7`);
+    const response = await axios.get(``);
     const data = response.data;
     updateChart(data);
   } catch (error) {
