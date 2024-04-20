@@ -31,8 +31,6 @@ async function logOut() {
         router.push(data.redirect)
     }
 }
-
-
 </script>
 
 <template>
