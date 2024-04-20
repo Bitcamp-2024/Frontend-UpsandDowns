@@ -132,4 +132,9 @@ input:focus {
 #signup-btn {
     width: 100%;
 }
+
+#error {
+    color: red;
+    font-weight: bold;
+}
 </style>
