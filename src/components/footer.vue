@@ -1,6 +1,6 @@
 <template>
     <div id="footer">
-        <p id="start">2024 Bitcamp Varun R, Varun D, Jai P, and Declan A</p>
+        <p id="start">2024 Bitcamp Varun R, Varun K, Jai P, and Declan A</p>
         <p id="end">Made with <span id="heart">❤️</span> in Maryland</p>
     </div>
 </template>
