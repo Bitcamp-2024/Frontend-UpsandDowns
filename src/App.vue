@@ -4,10 +4,6 @@ import Nav from "./components/nav.vue"
 
 <template>
   <Nav></Nav>
-  <h1>Hello App!</h1>
-  <p>
-    <strong>Current route path:</strong> {{ $route.fullPath }}
-  </p>
   <main>
     <RouterView />
   </main>

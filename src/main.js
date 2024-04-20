@@ -7,9 +7,11 @@ import App from './App.vue'
 //Routing
 import Home from "./pages/Home.vue"
 import About from "./pages/About.vue"
-let routes = [
+import Stock from "./pages/Stock.vue"
+const routes = [
     {path: "/", component: Home},
     {path: "/about", component: About},
+    {path: "/stock/:id", component: Stock}
 ]
 
 const router = createRouter({
