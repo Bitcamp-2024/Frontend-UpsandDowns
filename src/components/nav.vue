@@ -25,7 +25,7 @@ function goToLogin() {
         <div id="noneLogo">
             <RouterLink to="/" class="link">/</RouterLink>
             <RouterLink to="/about" class="link">About</RouterLink>
-            <div v-if="authUserStore().authenticated === true">
+            <div id="buttonGroup" v-if="authUserStore().authenticated === false">
                 <n-button class="button" color="#7c3aed" @click="goToSignUp">SIGN UP</n-button>
                 <n-button class="button" color="#7c3aed" @click="goToLogin">LOG IN</n-button>
             </div>
@@ -34,6 +34,10 @@ function goToLogin() {
 </template>
 
 <style scoped>
+#buttonGroup {
+    display: inline;
+}
+
 .header {
     font-size: 40px;
 }

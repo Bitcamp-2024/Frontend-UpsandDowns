@@ -11,7 +11,6 @@ export const authUserStore = defineStore("authUser", {
             let response = await fetch("/user")
             let data = await response.json();
             
-
             if(data.success) {
                 this.authenticated = true;
                 this.profile = data.body;
