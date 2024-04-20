@@ -5,57 +5,62 @@
       <input type="text" v-model="searchTerm" placeholder="Search...">
       <button @click="fetchStockData">Search</button>
     </header>
-    <div id="chart"></div>
+    <div>
+      <VueApexCharts
+      width="1000"
+      type="candlestick"
+      :options="chartOptions"
+      :series="series"
+      ></VueApexCharts>
+    </div>
   </div>
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue';
-import ApexCharts from 'apexcharts';
-import axios from 'axios';
+import { ref } from 'vue';
+import VueApexCharts from "vue3-apexcharts";
 
 const searchTerm = ref('');
+const chartOptions = ref({});
+const series = ref([]);
 
 // Function to fetch stock data
 const fetchStockData = async () => {
   try {
-    const response = await axios.get(``);
-    const data = response.data;
-    updateChart(data);
-  } catch (error) {
-    console.error('Error fetching stock data:', error);
-  }
+    searchTerm.value = searchTerm.value.toUpperCase();
+    const response = await fetch(`/stock/${searchTerm.value}`)
+    console.log(response);
+    const json = await response.json();
+    Promise.resolve(json.data)
+    .then(data => {
+      data = data.quotes;
+      chartOptions.value = {
+        chart: {
+          type: 'candlestick',
+          height: 350
+        },
+        title: {
+          text: `${searchTerm.value} Stock Prices`
+        },
+        xaxis: {
+          type: 'datetime'
+        },
+        yaxis: {
+          tooltip: {
+            enabled: true
+          }
+        }
+      };
+      series.value = [{
+        data: data.map(elm => {
+          return { x : Date.parse(elm.date), y: [elm.open, elm.high, elm.low, elm.close] }
+        })
+      }];
+    });
+  } catch (err) {
+      console.log('bad stock symbol');
+  } 
 };
-
-// Function to update the chart with received data
-const updateChart = (data) => {
-  const stockData = data.quoteResponse.result[0];
-  const seriesData = [{
-    data: [
-      { x: 'Symbol', y: stockData.symbol },
-      { x: 'Previous Close', y: stockData.regularMarketPreviousClose }
-    ]
-  }];
-
-  // Update the chart
-  chart.updateSeries(seriesData);
-};
-
-// Lifecycle hook to initialize the chart
-onMounted(() => {
-  const options = {
-    chart: {
-      type: 'bar'
-    },
-    series: [],
-    xaxis: {
-      type: 'category'
-    }
-  };
-
-  window.chart = new ApexCharts(document.querySelector("#chart"), options);
-  chart.render();
-});
 </script>
 
 <style scoped>

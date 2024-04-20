@@ -6,6 +6,7 @@ import { createApp } from 'vue'
 import { createPinia } from "pinia"
 import { authUserStore } from './stores'
 import App from './App.vue'
+import VueApexCharts from "vue3-apexcharts";
 
 //State Management
 let pinia = createPinia()
@@ -33,4 +34,4 @@ const router = createRouter({
     routes,
 })
 
-createApp(App).use(router).use(naive).use(pinia).mount('#app')
+createApp(App).use(router).use(naive).use(pinia).use(VueApexCharts).mount('#app')
