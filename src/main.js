@@ -15,11 +15,15 @@ let pinia = createPinia()
 import Home from "./pages/Home.vue"
 import About from "./pages/About.vue"
 import Stock from "./pages/Stock.vue"
+import Signup from "./pages/Signup.vue"
+import Login from "./pages/Login.vue"
 
 const routes = [
     {path: "/", component: Home},
     {path: "/about", component: About},
-    {path: "/stock/:id", component: Stock}
+    {path: "/stock/:id", component: Stock},
+    {path: "/signup", component: Signup},
+    {path: "/login", component: Login}
 ]
 
 const router = createRouter({
