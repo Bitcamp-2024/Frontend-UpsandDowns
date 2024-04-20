@@ -29,8 +29,8 @@ function goToLogin() {
                 <n-button class="button" color="#7c3aed" @click="goToSignUp">SIGN UP</n-button>
                 <n-button class="button" color="#7c3aed" @click="goToLogin">LOG IN</n-button>
             </div>
-            <div v-else>
-                <p id="username">@{{ authUserStore().profile.username }}</p>
+            <div v-else id="username">
+                <p id="usernameT">@{{ authUserStore().profile.username }}</p>
             </div>
         </div>
     </div>
@@ -42,7 +42,13 @@ function goToLogin() {
 }
 
 #username {
+    display: inline;
+    margin-right: 30px;
+}
+
+#usernameT {
     font-weight: bold;
+    display: inline;
 }
 
 .header {
