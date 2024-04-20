@@ -14,6 +14,17 @@ function goToLogin() {
     router.push("/login")
 }
 
+async function logOut() {
+    console.log('logging out')
+    await fetch("/post", {
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+        },
+        method: 'POST'
+    } 
+)}
+
 
 </script>
 
@@ -31,6 +42,7 @@ function goToLogin() {
             </div>
             <div v-else id="username">
                 <p id="usernameT">@{{ authUserStore().profile.username }}</p>
+                <n-button class="button" color="#7c3aed" @click="logOut">LOG OUT</n-button>"
             </div>
         </div>
     </div>
