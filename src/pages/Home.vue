@@ -1,5 +1,6 @@
 <script setup>
 import { authUserStore } from '../stores.js';
+import { useRouter } from "vue-router"
 import { ArrowRedo } from "@vicons/ionicons5";
 import { onMounted } from "vue";
 
@@ -12,6 +13,8 @@ const stocks = [
   'MRK',   'ABBV', 'COST', 'PEP',
   'ADBE'
 ];
+
+let router = useRouter();
 
 const rand = Math.floor(Math.random() * stocks.length);
 const curr = stocks[rand];
@@ -56,13 +59,17 @@ onMounted(() => {
   chart.render();
 });
 
+function goToDashboard() {
+    router.push("/dashboard")
+}
+
 </script>
 
 <template>
     <div>
         <div id="loggedIn" v-if="authUserStore().authenticated === true"> 
             <h1>Welcome, {{ authUserStore().profile.name }}</h1>
-            <n-button class="textbutton" text>
+            <n-button class="textbutton" text @click="goToDashboard">
                 Dashboard
                 <template #icon>
                     <n-icon>
