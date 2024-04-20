@@ -95,12 +95,10 @@ p {
 #split {
     width: 50%;
     line-height: 200%;
-    margin-left: 50px;
 }
 
 .para {
     font-weight: bold;
-    color: white;
 }
 
 h1 {
@@ -115,7 +113,6 @@ h1 {
   font-weight: bold; /* Make the text bold */
   font-family: Arial, sans-serif; /* Specify font family */
   text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); /* Add text shadow for definition */
-  margin-left: 50px;
-
+  margin-left: 25px;
 }
 </style>
