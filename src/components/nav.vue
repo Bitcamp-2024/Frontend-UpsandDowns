@@ -36,7 +36,8 @@ async function logOut() {
 <template>
     <div id="navbar">
         <div id="logo">
-            <p class="header">Logo Here</p>
+            <!-- <p class="header">Logo Here</p> -->
+            <RouterLink to="/"><img src="../assets/logo.jpg"></RouterLink>
         </div>
         <div id="noneLogo">
             <RouterLink to="/" class="link">/</RouterLink>
@@ -68,10 +69,6 @@ async function logOut() {
     display: inline;
 }
 
-.header {
-    font-size: 40px;
-}
-
 #logo {
     margin-left: 30px;
 }
@@ -97,5 +94,15 @@ async function logOut() {
     flex-direction: row;
     justify-content: space-between;
     margin-bottom: 40px;
+}
+#logo img {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    margin-top: 20px;
+    transition: .2s ease-in;
+}
+#logo img:hover {
+    transform: scale(1.2);
 }
 </style>
