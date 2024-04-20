@@ -1,6 +1,7 @@
 <script setup>
 import { ref } from "vue"
 import { useRouter } from "vue-router"
+import { authUserStore } from '../stores.js';
 
 let username = ref("")
 let password = ref("")
@@ -25,6 +26,7 @@ async function login() {
   }
 
   if(data.success) {
+    authUserStore().Login();
     router.push(data.redirect)
   }
 }
