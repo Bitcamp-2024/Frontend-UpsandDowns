@@ -1,7 +1,7 @@
 <template>
   <div>
     <header>
-      <h1>Chart Dashboard</h1>
+      <h1 id="header">Chart Dashboard</h1><span id="Special">$</span><span id="nSpecial">{{ searchTerm.toUpperCase() }}</span>
       <input type="text" v-model="searchTerm" placeholder="Search...">
       <button @click="fetchStockData">Search</button>
     </header>
@@ -68,6 +68,20 @@ const fetchStockData = async () => {
 </script>
 
 <style scoped>
+#header {
+  display: inline;
+}
+#Special {
+  margin-left: 30px;
+  font-size: 30px;
+  color: #7c3aed;
+}
+
+#nSpecial {
+  margin-left: 10px;
+  font-size: 30px;
+}
+
 header {
   padding: 20px;
   background-color: #333;
@@ -85,7 +99,9 @@ h1 {
 }
 
 input[type="text"] {
-  margin-right: 10px;
+  display: block;
+  margin-top: 10px;
+  margin-bottom: 10px;
 }
 
 button {
