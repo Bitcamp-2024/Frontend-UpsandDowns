@@ -3,7 +3,13 @@ import { createRouter, createWebHashHistory } from 'vue-router'
 import Cookies from 'js-cookie'
 import naive from 'naive-ui'
 import { createApp } from 'vue'
+import { createPinia } from "pinia"
 import App from './App.vue'
+
+//State Management
+let pinia = createPinia()
+
+
 
 //Routing
 import Home from "./pages/Home.vue"
@@ -21,4 +27,4 @@ const router = createRouter({
     routes,
 })
 
-createApp(App).use(router).use(naive).mount('#app')
+createApp(App).use(router).use(naive).use(pinia).mount('#app')
