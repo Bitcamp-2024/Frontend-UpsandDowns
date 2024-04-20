@@ -26,7 +26,7 @@ async function logOut() {
     let data = await response.json()
     //Error handling here or something idk
     
-    if(data.success) {
+    if(data.message) {
         authUserStore().Login();
         router.push(data.redirect)
     }
