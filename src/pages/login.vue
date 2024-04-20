@@ -45,7 +45,7 @@ async function login() {
           <label for="password" class="input-label">Password</label>
           <input type="password" class="form-control" id="password" v-model="password" required autocomplete="off">
         </div>
-        <button type="submit" class="btn btn-primary" id="login-btn" @click="login">LOG IN!</button>
+        <button type="submit" class="btn btn-primary" id="login-btn">LOG IN!</button>
         <p id="error">{{ text }}</p>
       </form>
     </div>

@@ -16,7 +16,7 @@ function goToLogin() {
 
 async function logOut() {
     console.log('logging out')
-    await fetch("/post", {
+    await fetch("/logout", {
         headers: {
             'Accept': 'application/json',
             'Content-Type': 'application/json'
@@ -42,7 +42,7 @@ async function logOut() {
             </div>
             <div v-else id="username">
                 <p id="usernameT">@{{ authUserStore().profile.username }}</p>
-                <n-button class="button" color="#7c3aed" @click="logOut">LOG OUT</n-button>"
+                <n-button class="button" color="#7c3aed" @click="logOut">LOG OUT</n-button>
             </div>
         </div>
     </div>

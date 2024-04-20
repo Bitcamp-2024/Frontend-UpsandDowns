@@ -15,6 +15,10 @@ export const authUserStore = defineStore("authUser", {
                 this.authenticated = true;
                 this.profile = data.body;
             }
+        },
+        async Logout() {
+            this.authenticated = false;
+            this.profile = null;
         }
     }
 })
