@@ -7,18 +7,33 @@ authUserStore().Login();
 </script>
 
 <template>
-  <Nav></Nav>
-  <main>
-    <RouterView v-slot="{ Component }">
-      <transition name="slide-fade">
-        <component :is="Component"></component>
-      </transition>
-    </RouterView>
-  </main>
-  <Footer></Footer>
+  <div id="app">
+    <Nav></Nav>
+    <main>
+      <RouterView v-slot="{ Component }">
+        <transition name="slide-fade">
+          <component :is="Component"></component>
+        </transition>
+      </RouterView>
+    </main>
+    <Footer></Footer>
+  </div>
 </template>
 
 <style scoped>
+#app {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+main {
+  flex-grow: 1;
+}
+
+footer {
+  flex-shrink: 0;
+}
 
 /*
   Enter and leave animations can use different

@@ -5,6 +5,7 @@ import { useRouter } from "vue-router"
 let name = ref("")
 let username = ref("")
 let password = ref("")
+let text = ref("")
 
 let router = useRouter()
 
@@ -18,13 +19,14 @@ async function signup() {
     body: JSON.stringify({name: name.value, username: username.value, password: password.value})
   })
 
-  let data = response.json()
+  let data = await response.json()
 
   if(data.errorCode) {
-    //Do something for error here
+    text.value = data.error;
   }
 
   if(data.success) {
+    text.value = 'success!';
     router.push(data.redirect)
   }
 }
@@ -37,17 +39,18 @@ async function signup() {
       <form @submit.prevent="signup">
         <div class="form-group">
           <label for="name" class="input-label">Name</label>
-          <input type="text" class="form-control" id="name" v-model="name" required>
+          <input type="text" class="form-control" id="name" v-model="name" required autocomplete="off">
         </div>
         <div class="form-group">
           <label for="username" class="input-label">Username</label>
-          <input type="text" class="form-control" id="username" v-model="username" required>
+          <input type="text" class="form-control" id="username" v-model="username" required autocomplete="off">
         </div>
         <div class="form-group">
           <label for="password" class="input-label">Password</label>
-          <input type="password" class="form-control" id="password" v-model="password" required>
+          <input type="password" class="form-control" id="password" v-model="password" required autocomplete="off">
         </div>
-        <button type="submit" class="btn btn-primary" id="signup-btn" @click="signup">SIGNUP!</button>
+        <button type="submit" class="btn btn-primary" id="signup-btn" @click="signup">SIGN UP!</button>
+        <p id="error">{{ text }}</p>
       </form>
     </div>
   </div>
