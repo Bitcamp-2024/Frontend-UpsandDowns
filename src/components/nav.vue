@@ -13,6 +13,7 @@ function goToLogin() {
     router.push("/login")
 }
 
+
 </script>
 
 <template>

@@ -1,5 +1,6 @@
 import './assets/main.css'
 import { createRouter, createWebHashHistory } from 'vue-router'
+import Cookies from 'js-cookie'
 import naive from 'naive-ui'
 import { createApp } from 'vue'
 import App from './App.vue'
