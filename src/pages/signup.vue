@@ -1,3 +1,35 @@
+<script setup>
+import { ref } from "vue"
+import { useRouter } from "vue-router"
+
+let name = ref("")
+let username = ref("")
+let password = ref("")
+
+let router = useRouter()
+
+async function signup() {
+  let response = await fetch("/signup", {
+    headers: {
+      'Accept': 'application/json',
+      'Content-Type': 'application/json'
+    },
+    method: "POST",
+    body: JSON.stringify({name: name.value, username: username.value, password: password.value})
+  })
+
+  let data = response.json()
+
+  if(data.errorCode) {
+    //Do something for error here
+  }
+
+  if(data.success) {
+    router.push(data.redirect)
+  }
+}
+</script>
+
 <template>
   <div class="signup-container">
     <h2 class="signup-title">SIGN UP</h2>
@@ -21,29 +53,6 @@
   </div>
 </template>
 
-<script>
-export default {
-  data() {
-    return {
-      name: '',
-      username: '',
-      password: ''
-    };
-  },
-  methods: {
-    signup() {
-      // Here you can implement your signup logic, like sending the data to your backend
-      console.log('Name:', this.name);
-      console.log('Username:', this.username);
-      console.log('Password:', this.password);
-      // Reset the form fields after submission
-      this.password = '';
-    }
-  }
-};
-</script>
-
-<!-- Add styles -->
 <style scoped>
 input {
     border-radius: 2px;

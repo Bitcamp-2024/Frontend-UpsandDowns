@@ -15,8 +15,8 @@ let pinia = createPinia()
 import Home from "./pages/Home.vue"
 import About from "./pages/About.vue"
 import Stock from "./pages/Stock.vue"
-import Signup from "./pages/Signup.vue"
-import Login from "./pages/Login.vue"
+import Signup from "./pages/signup.vue"
+import Login from "./pages/login.vue"
 
 const routes = [
     {path: "/", component: Home},
