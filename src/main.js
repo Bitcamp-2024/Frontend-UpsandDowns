@@ -1,6 +1,6 @@
 import './assets/main.css'
 import { createRouter, createWebHashHistory } from 'vue-router'
-
+import naive from 'naive-ui'
 import { createApp } from 'vue'
 import App from './App.vue'
 
@@ -8,6 +8,7 @@ import App from './App.vue'
 import Home from "./pages/Home.vue"
 import About from "./pages/About.vue"
 import Stock from "./pages/Stock.vue"
+
 const routes = [
     {path: "/", component: Home},
     {path: "/about", component: About},
@@ -19,4 +20,4 @@ const router = createRouter({
     routes,
 })
 
-createApp(App).use(router).mount('#app')
+createApp(App).use(router).use(naive).mount('#app')

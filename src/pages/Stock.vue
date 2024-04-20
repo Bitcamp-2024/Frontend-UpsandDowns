@@ -58,7 +58,7 @@ onMounted(() => {
 });
 </script>
 
-<style>
+<style scoped>
 header {
   padding: 20px;
   background-color: #333;
