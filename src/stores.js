@@ -1,7 +1,7 @@
 import { defineStore } from "pinia"
 
 
-let authUserStore = defineStore("authUser", {
+export let authUserStore = defineStore("authUser", {
     state: () => ({
         authenticaed: false, 
         profile: null
