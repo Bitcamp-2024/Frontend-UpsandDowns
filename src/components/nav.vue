@@ -29,6 +29,9 @@ function goToLogin() {
                 <n-button class="button" color="#7c3aed" @click="goToSignUp">SIGN UP</n-button>
                 <n-button class="button" color="#7c3aed" @click="goToLogin">LOG IN</n-button>
             </div>
+            <div v-else>
+                <p id="username">@{{ authUserStore().profile.username }}</p>
+            </div>
         </div>
     </div>
 </template>
@@ -36,6 +39,10 @@ function goToLogin() {
 <style scoped>
 #buttonGroup {
     display: inline;
+}
+
+#username {
+    font-weight: bold;
 }
 
 .header {
