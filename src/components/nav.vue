@@ -1,5 +1,6 @@
 <script setup>
 import { RouterLink, useRouter} from "vue-router"
+import { authUserStore } from '../stores.js';
 
 let router = useRouter();
 
@@ -24,8 +25,10 @@ function goToLogin() {
         <div id="noneLogo">
             <RouterLink to="/" class="link">/</RouterLink>
             <RouterLink to="/about" class="link">About</RouterLink>
-            <n-button class="button" color="#7c3aed" @click="goToSignUp">SIGN UP</n-button>
-            <n-button class="button" color="#7c3aed" @click="goToLogin">LOG IN</n-button>
+            <div v-if="authUserStore().authenticated === true">
+                <n-button class="button" color="#7c3aed" @click="goToSignUp">SIGN UP</n-button>
+                <n-button class="button" color="#7c3aed" @click="goToLogin">LOG IN</n-button>
+            </div>
         </div>
     </div>
 </template>

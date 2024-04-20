@@ -4,11 +4,11 @@ import Cookies from 'js-cookie'
 import naive from 'naive-ui'
 import { createApp } from 'vue'
 import { createPinia } from "pinia"
+import { authUserStore } from './stores'
 import App from './App.vue'
 
 //State Management
 let pinia = createPinia()
-
 
 
 //Routing

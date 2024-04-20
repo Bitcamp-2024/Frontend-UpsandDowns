@@ -1,9 +1,9 @@
 import { defineStore } from "pinia"
 
 
-export let authUserStore = defineStore("authUser", {
+export const authUserStore = defineStore("authUser", {
     state: () => ({
-        authenticaed: false, 
+        authenticated: false, 
         profile: null
     }),
     actions: {
@@ -13,8 +13,8 @@ export let authUserStore = defineStore("authUser", {
             
 
             if(data.success) {
-                this.authenticaed = true;
-                this.profile = data.body
+                this.authenticated = true;
+                this.profile = data.body;
             }
         }
     }
