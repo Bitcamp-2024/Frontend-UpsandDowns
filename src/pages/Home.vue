@@ -25,6 +25,7 @@ p {
 #split {
     width: 50%;
     line-height: 200%;
+    margin-left: 50px;
 }
 
 .para {
@@ -44,6 +45,7 @@ h1 {
   font-weight: bold; /* Make the text bold */
   font-family: Arial, sans-serif; /* Specify font family */
   text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); /* Add text shadow for definition */
-  margin-left: 24px;
+  margin-left: 50px;
+
 }
 </style>
