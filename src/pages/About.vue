@@ -3,16 +3,18 @@
 </script>
 
 <template>
-    <header>
-        <h1>About us</h1>
-    </header>
-    <div class="paracontainer">
-        <p class="para">Welcome to our world! We're a dynamic squad of Machine Learning (ML) and Full Stack Development trailblazers. Our passion lies in crafting cutting-edge finance applications designed to empower all users. We're here to revolutionize the way you interact with financial technology, making complexity simple and accessibility paramount. Join us on our journey to redefine the future of finance!</p>
-        <div class="githublinks">Githubs: 
-            <a href="https://github.com/DurjaMan27">github/DurjaMan27</a>,
-            <a href="https://github.com/qwertydelle">github/qwertydelle</a>,
-            <a href="https://github.com/NerdyGamer05">github/NerdyGamer05</a>,
-            <a href="https://github.com/Programlog">github/Programlog</a>.
+    <div>
+        <header>
+            <h1>About us</h1>
+        </header>
+        <div class="paracontainer">
+            <p class="para">Welcome to our world! We're a dynamic squad of Machine Learning (ML) and Full Stack Development trailblazers. Our passion lies in crafting cutting-edge finance applications designed to empower all users. We're here to revolutionize the way you interact with financial technology, making complexity simple and accessibility paramount. Join us on our journey to redefine the future of finance!</p>
+            <div class="githublinks">Githubs: 
+                <a href="https://github.com/DurjaMan27">github/DurjaMan27</a>,
+                <a href="https://github.com/qwertydelle">github/qwertydelle</a>,
+                <a href="https://github.com/NerdyGamer05">github/NerdyGamer05</a>,
+                <a href="https://github.com/Programlog">github/Programlog</a>.
+            </div>
         </div>
     </div>
 </template>
