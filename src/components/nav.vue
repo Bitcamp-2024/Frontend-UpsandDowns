@@ -15,15 +15,22 @@ function goToLogin() {
 }
 
 async function logOut() {
-    console.log('logging out')
-    await fetch("/logout", {
+    let response = await fetch("/logout", {
         headers: {
             'Accept': 'application/json',
             'Content-Type': 'application/json'
         },
         method: 'POST'
-    } 
-)}
+    })
+
+    let data = await response.json()
+    //Error handling here or something idk
+    
+    if(data.success) {
+        authUserStore().Login();
+        router.push(data.redirect)
+    }
+}
 
 
 </script>
