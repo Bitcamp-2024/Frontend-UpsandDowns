@@ -1,5 +1,7 @@
 <script setup>
 import { authUserStore } from '../stores.js';
+import { ArrowRedo } from "@vicons/ionicons5"
+
 </script>
 
 <template>
@@ -7,6 +9,14 @@ import { authUserStore } from '../stores.js';
     <div>
         <div id="loggedIn" v-if="authUserStore().authenticated === true"> 
             <h1>Welcome, {{ authUserStore().profile.name }}</h1>
+            <n-button class="textbutton" text>
+                Dashboard
+                <template #icon>
+                    <n-icon>
+                        <ArrowRedo />
+                    </n-icon>
+                </template>
+            </n-button>
         </div>
         <div v-else id="notloggedin">
             <h1>UPS & DOWNS: Your personal finance advisor</h1>
@@ -20,6 +30,12 @@ import { authUserStore } from '../stores.js';
 <style scoped>
 p {
     margin: 30px;
+}
+
+.textbutton {
+    color: #7c3aed;
+    margin: 50px;
+    text-decoration: underline;
 }
 
 #split {
