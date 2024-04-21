@@ -12,6 +12,7 @@
         <option value="5yr">5 Years</option>
       </select>
       <h1 id="header">Chart Dashboard</h1><span id="Special">$</span><span id="nSpecial">{{ searchTerm.toUpperCase() }}</span>
+      <n-button @click="addToWatchList">ADD TO WATCHLIST</n-button>
     </header>
     <div>
       <VueApexCharts
@@ -34,6 +35,10 @@ const selectedInterval = ref('6mo'); // default is 6 months
 const chartOptions = ref({});
 const series = ref([]);
 const message = ref('');
+
+function addToWatchlist() {
+  
+}
 
 const rangeToDays = (range) => {
   return range === '1wk' ? 7 : 
