@@ -92,6 +92,10 @@ p {
     margin: 30px;
 }
 
+#parent {
+  display: flex;
+  justify-content: space-between;
+}
 .textbutton {
     color: #7c3aed;
     margin: 50px;
@@ -126,6 +130,7 @@ h1 {
 #chart {
   display: flex;
   float: right;
+  margin-right: 60px;
 }
 
 #parent {
