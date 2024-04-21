@@ -66,6 +66,8 @@ function goToDashboard() {
                     </n-icon>
                 </template>
             </n-button>
+            <div id="waitlist">
+            </div>
         </div>
         <div v-else id="notloggedin">
             <h1>UPS & DOWNS: Your Personal Finance Advisor</h1>
