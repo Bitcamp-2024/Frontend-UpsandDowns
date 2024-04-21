@@ -66,7 +66,8 @@ function goToDashboard() {
                     </n-icon>
                 </template>
             </n-button>
-            <div id="waitlist">
+            <div id="watchlist">
+              <!-- watchlist goes here -->
             </div>
         </div>
         <div v-else id="notloggedin">
