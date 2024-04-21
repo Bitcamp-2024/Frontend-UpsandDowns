@@ -1,61 +1,52 @@
 <script setup>
 import { authUserStore } from '../stores.js';
 import { useRouter } from "vue-router"
-import { ArrowRedo } from "@vicons/ionicons5";
-import { onMounted } from "vue";
-
-const stocks = [
-  'AAPL',  'MSFT', 'AMZN', 'NVDA',
-  'GOOGL', 'TSLA', 'GOOG', 'BRK.B',
-  'META',  'UNH',  'XOM',  'LLY',
-  'JPM',   'JNJ',  'V',    'PG',
-  'MA',    'AVGO', 'HD',   'CVX',
-  'MRK',   'ABBV', 'COST', 'PEP',
-  'ADBE'
-];
+import VueApexCharts from "vue3-apexcharts";
+import { ref } from 'vue';
 
 let router = useRouter();
 
-const rand = Math.floor(Math.random() * stocks.length);
-const curr = stocks[rand];
+const chartOptions = ref({});
+const series = ref([]);
 
-const fetchStockData = async () => {
-  try {
-    fetch(`/stock/${searchTerm.value}`)
-    .then(response => response.json())
-    .then(json => {  
-      Promise.resolve(json.data)
-      .then(data => {
-        data = data.quotes.slice(-300)
-        chartOptions.value = {
-          chart: {
-            type: 'line',
-            height: 600
-          },
-          title: {
-            text: `${searchTerm.value} Stock Prices`
-          },
-          xaxis: {
-            type: 'datetime',
-            stepSize: 30,
-          },
-          yaxis: {
-            tooltip: {
-              enabled: true
-            }
-          }
-        };
-        series.value = [{
-          data: data.map(elm => {
-            return { x : elm.date.slice(0,10), y: [elm.open, elm.high, elm.low, elm.close] }
-          })
-        }];
-      })
-    })
-  } catch (err) {
-    console.log(err);
-  }
+const fetchStockData = () => {
+  const data = [[1,1],[2,2],[3,5],[4,4],[5,6]];
+    series.value = [{
+      name: "Desktops",
+      data: data.map(x => x[1])
+    }];
+    chartOptions.value = {
+      chart: {
+        height: 20,
+        width: 20,
+        type: 'line',
+        zoom: {
+          enabled: false
+        },
+        background: '#000',
+      },
+      colors: ['#6d3fc8'],
+      dataLabels: {
+        enabled: false
+      },
+      stroke: {
+        curve: 'straight'
+      },
+      title: {
+        text: '',
+        align: 'left'
+      },
+      theme: {
+        mode: 'dark'
+      },
+      xaxis: {
+        categories: data.map(x => x[0]),
+        stepSize: 50
+      }
+    }
 };
+
+fetchStockData();
 
 function goToDashboard() {
     router.push("/dashboard")
@@ -78,15 +69,20 @@ function goToDashboard() {
         </div>
         <div v-else id="notloggedin">
             <h1>UPS & DOWNS: Your Personal Finance Advisor</h1>
-            <div id="split">
+            <div id="parent">
+              <div id="split">
                 <p class="para">Welcome to UPS & DOWNS: Your personal finance advisor, your AI companion dedicated to navigating the volatile seas of trading and personal finance. Whether you're a seasoned investor or just dipping your toes into the world of finance, UPS & DOWNS is here to provide insightful guidance and actionable advice tailored to your unique financial goals and risk tolerance. Through cutting-edge AI algorithms and real-time market analysis, UPS & DOWNS keeps a vigilant eye on market trends, economic indicators, and news events that could impact your investments. Our goal is simple: to empower you with the knowledge and tools you need to make informed decisions and stay ahead of the curve in an ever-changing financial landscape</p>
+              </div>
+              <div id="chart">
+                <VueApexCharts
+                height="500"
+                width="500"
+                type="line"
+                :options="chartOptions"
+                :series="series"
+                ></VueApexCharts>
+              </div>
             </div>
-            <VueApexCharts
-              width="600"
-              type="candlestick"
-              :options="chartOptions"
-              :series="series"
-            ></VueApexCharts>
         </div>
     </div>
 </template>
@@ -105,6 +101,7 @@ p {
 #split {
     width: 50%;
     line-height: 200%;
+    float: left;
 }
 
 .para {
@@ -124,5 +121,14 @@ h1 {
   font-family: Arial, sans-serif; /* Specify font family */
   text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); /* Add text shadow for definition */
   margin-left: 25px;
+}
+
+#chart {
+  display: flex;
+  float: right;
+}
+
+#parent {
+  display: flex;
 }
 </style>

@@ -75,6 +75,9 @@ const fetchStockData = async () => {
           title: {
             text: `${searchTerm.value} Stock Prices`
           },
+          theme: {
+            mode: 'dark'
+          },
           xaxis: {
             type: 'datetime',
             stepSize: getStepSize(rangeToDays(selectedInterval.value))
