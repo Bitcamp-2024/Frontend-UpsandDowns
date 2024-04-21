@@ -12,7 +12,7 @@
         <option value="5yr">5 Years</option>
       </select>
       <h1 id="header">Chart Dashboard</h1><span id="Special">$</span><span id="nSpecial">{{ searchTerm.toUpperCase() }}</span>
-      <n-button @click="addToWatchList">ADD TO WATCHLIST</n-button>
+      <n-button id="watchlist-btn" @click="addToWatchList">ADD TO WATCHLIST</n-button>
     </header>
     <div>
       <VueApexCharts
@@ -23,6 +23,9 @@
       ></VueApexCharts>
     </div>
     <p id="error-message">{{ message }}</p>
+    <div>
+      <n-button id="predict" @click="displayPredictions">Let's See the Future! 👽</n-button>
+    </div>
   </div>
 </template>
 
@@ -45,14 +48,37 @@ async function addToWatchlist() {
     },
     body: JSON.stringify({ ticker: searchTerm.value })
   });
-  const data = response.json();
+  const data = await response.json();
   if (data.errorCode) {
     console.log(data.error);
     return;
   }
   if (data.success) {
+    authUserStore.Login();
     router.push(data.redirect);
   }
+}
+
+
+async function displayPredictions() {
+  const response = await fetch('/runmodel', {
+    method: 'POST',
+    headers: {
+      'Accept': 'application/json',
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({ ticker: searchTerm.value })
+  });
+  const data = await response.json();
+  if (data.errorCode) {
+    console.log(data.error);
+    return;
+  }
+  if (!data.success) {
+    return;
+  }
+  const body = JSON.parse(data).body;
+  console.log(body);
 }
 
 const rangeToDays = (range) => {
@@ -65,7 +91,7 @@ const rangeToDays = (range) => {
 }
 
 const getStepSize = (range) => {
-  return range <= 10 ? 1 : Math.floor(range / 10);
+  return range <= 10 ? 1 : Math.floor(range / 15);
 }
 
 // Function to fetch stock data
@@ -73,51 +99,39 @@ const fetchStockData = async () => {
   message.value = '';
   searchTerm.value = searchTerm.value.toUpperCase();
   try {
-    const response = await fetch(`/stock/${searchTerm.value}`).then(response => {
-      if (!response.ok) {
-        message.value = data.message;
-        throw new Error('handled');
-      }
-    })
-    response.json().then(json => {
-      Promise.resolve(json.data)
-      .then(data => {
-        if (flag) {
-          Promise.reject();
-          return;
+    const response = await fetch(`/stock/${searchTerm.value}`)
+    const json = await response.json()
+    let data = json.data;
+    if (!data) {
+      return;
+    }
+    data = data.quotes.slice(-1 * rangeToDays(selectedInterval.value));
+    chartOptions.value = {
+      chart: {
+        type: 'candlestick',
+        height: 600
+      },
+      title: {
+        text: `${searchTerm.value} Stock Prices`
+      },
+      theme: {
+        mode: 'dark'
+      },
+      xaxis: {
+        type: 'datetime',
+        stepSize: getStepSize(rangeToDays(selectedInterval.value))
+      },
+      yaxis: {
+        tooltip: {
+          enabled: true
         }
-        data = data.quotes.slice(-1 * rangeToDays(selectedInterval.value));
-        chartOptions.value = {
-          chart: {
-            type: 'candlestick',
-            height: 600
-          },
-          title: {
-            text: `${searchTerm.value} Stock Prices`
-          },
-          theme: {
-            mode: 'dark'
-          },
-          xaxis: {
-            type: 'datetime',
-            stepSize: getStepSize(rangeToDays(selectedInterval.value))
-          },
-          yaxis: {
-            tooltip: {
-              enabled: true
-            }
-          }
-        };
-        series.value = [{
-          data: data.map(elm => {
-            return { x : elm.date.slice(0,10), y: [elm.open, elm.high, elm.low, elm.close] }
-          })
-        }];
-      }).catch(err => {
-        console.log('bad stock symbol');
-        message.value = data.message;
-      });
-    })
+      }
+    };
+    series.value = [{
+      data: data.map(elm => {
+        return { x : elm.date.slice(0,10), y: [elm.open, elm.high, elm.low, elm.close] }
+      })
+    }];
   } catch (err) {
     console.log(err);
     message.value = data.message;
@@ -180,5 +194,22 @@ button:hover {
 
 select {
   margin-left: 10px;
+}
+
+#predict {
+  background-color: red;
+  width: 100%;
+  text-align: center;
+  margin-bottom: 30px;
+  /* transition: 0.3s ease-in; */
+}
+
+#predict:hover {
+  /* transform: scale(1.2); */
+}
+
+#watchlist-btn {
+  margin-left: 15px;
+  margin-bottom: 7px;
 }
 </style>

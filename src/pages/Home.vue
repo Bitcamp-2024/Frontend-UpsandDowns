@@ -8,6 +8,7 @@ let router = useRouter();
 
 const chartOptions = ref({});
 const series = ref([]);
+const months = ref(["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"]);
 
 const fetchStockData = () => {
   const data = [[1,1],[2,2],[3,5],[4,4],[5,6]];
@@ -67,7 +68,9 @@ function goToDashboard() {
                 </template>
             </n-button>
             <div id="watchlist">
-              
+              <ul v-for="stock in authUserStore().profile.watchlist" :key="stock.ticker">
+                <li>{{ stock.ticker }}</li>
+              </ul>
             </div>
         </div>
         <div v-else id="notloggedin">
