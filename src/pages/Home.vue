@@ -50,7 +50,7 @@ const fetchStockData = () => {
 fetchStockData();
 
 function goToDashboard() {
-    router.push("/dashboard")
+    router.push("/stock")
 }
 
 </script>

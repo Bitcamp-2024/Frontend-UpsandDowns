@@ -26,6 +26,15 @@
     <div>
       <n-button id="predict" @click="displayPredictions">Let's See the Future! 👽</n-button>
     </div>
+    <div>
+      <VueApexCharts
+      width="1200"
+      type="line"
+      :options="buyChartOptions"
+      :series="buySeriesOptions"
+      ></VueApexCharts>
+    </div>
+    <p id="buy-msg">{{ buyMessage }}</p>
   </div>
 </template>
 
@@ -38,6 +47,10 @@ const selectedInterval = ref('6mo'); // default is 6 months
 const chartOptions = ref({});
 const series = ref([]);
 const message = ref('');
+
+const buyChartOptions = ref({});
+const buySeriesOptions = ref([]);
+const buyMessage = ref('')
 
 async function addToWatchlist() {
   const response = await fetch('/userupdate', {
@@ -61,6 +74,7 @@ async function addToWatchlist() {
 
 
 async function displayPredictions() {
+  buyMessage.value = '';
   const response = await fetch('/runmodel', {
     method: 'POST',
     headers: {
@@ -77,8 +91,46 @@ async function displayPredictions() {
   if (!data.success) {
     return;
   }
-  const body = JSON.parse(data).body;
+  // console.log(data);
+  const body = JSON.parse(data.body);
   console.log(body);
+  buyMessage.value = `${searchTerm.value}: ${body.recommendation}`; // "buy" or something else]
+  console.log(body.df_indicators);
+  const sma20 = body.df_indicators.SMA20
+  const sma50 = body.df_indicators.SMA50;
+  console.log(sma20);
+  console.log(sma50);
+  buySeriesOptions.value = [{
+      name: 'SMA20',
+      data: Object.values(sma20)
+    },{
+      name: 'SMA50',
+      data: Object.values(sma50)
+    }];
+    buyChartOptions.value = {
+      chart: {
+        type: 'line',
+        height: 1200
+      },
+      title: {
+        text: 'SMA20 & SMA50',
+      },
+      xaxis: {
+        type: 'datetime',
+        title: {
+          text: ''
+        }
+      },
+      yaxis: {
+        title: {
+          text: `${searchTerm.value} Stock Prices`
+        },
+        tooltip: {
+          enabled: true
+        }
+      },
+      stepSize: 100
+  };
 }
 
 const rangeToDays = (range) => {
@@ -125,7 +177,7 @@ const fetchStockData = async () => {
         tooltip: {
           enabled: true
         }
-      }
+      },
     };
     series.value = [{
       data: data.map(elm => {
@@ -211,5 +263,11 @@ select {
 #watchlist-btn {
   margin-left: 15px;
   margin-bottom: 7px;
+}
+#buy-msg {
+  color: white;
+  font-weight: bolder;
+  text-align: center;
+  font-size: 28px;
 }
 </style>
