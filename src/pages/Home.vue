@@ -69,7 +69,7 @@ function goToDashboard() {
             </n-button>
             <div id="watchlist">
               <ul v-for="stock in authUserStore().profile.watchlist" :key="stock.ticker">
-                <li>{{ stock.ticker }}</li>
+                <li>{{ stock.ticker + " " + (new Date(stock.DateAdded).toLocaleDateString()) }}</li>
               </ul>
             </div>
         </div>
