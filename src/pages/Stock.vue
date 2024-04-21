@@ -36,8 +36,23 @@ const chartOptions = ref({});
 const series = ref([]);
 const message = ref('');
 
-function addToWatchlist() {
-  
+async function addToWatchlist() {
+  const response = await fetch('/userupdate', {
+    method: 'POST',
+    headers: {
+      'Accept': 'application/json',
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({ ticker: searchTerm.value })
+  });
+  const data = response.json();
+  if (data.errorCode) {
+    console.log(data.error);
+    return;
+  }
+  if (data.success) {
+    router.push(data.redirect);
+  }
 }
 
 const rangeToDays = (range) => {

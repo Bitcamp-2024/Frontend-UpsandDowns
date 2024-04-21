@@ -9,8 +9,7 @@ export const authUserStore = defineStore("authUser", {
     actions: {
         async Login() {
             let response = await fetch("/user")
-            // let data = await response.json();
-            let data = {sucess: false}
+            let data = await response.json();
             
             if(data.success) {
                 this.authenticated = true;

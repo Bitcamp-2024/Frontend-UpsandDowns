@@ -18,15 +18,13 @@ import About from "./pages/About.vue"
 import Stock from "./pages/Stock.vue"
 import Signup from "./pages/signup.vue"
 import Login from "./pages/login.vue"
-import dashboard from './pages/dashboard.vue'
 
 const routes = [
     {path: "/", component: Home},
     {path: "/about", component: About},
-    {path: "/stock/:id", component: Stock},
+    {path: "/stock", component: Stock},
     {path: "/signup", component: Signup},
     {path: "/login", component: Login},
-    {path: "/dashboard", component: dashboard}
 ]
 
 const router = createRouter({

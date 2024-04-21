@@ -67,14 +67,14 @@ function goToDashboard() {
                 </template>
             </n-button>
             <div id="watchlist">
-              <!-- watchlist goes here -->
+              
             </div>
         </div>
         <div v-else id="notloggedin">
             <h1>UPS & DOWNS: Your Personal Finance Advisor</h1>
             <div id="parent">
               <div id="split">
-                <p class="para">Welcome to UPS & DOWNS: Your personal finance advisor, your AI companion dedicated to navigating the volatile seas of trading and personal finance. Whether you're a seasoned investor or just dipping your toes into the world of finance, UPS & DOWNS is here to provide insightful guidance and actionable advice tailored to your unique financial goals and risk tolerance. Through cutting-edge AI algorithms and real-time market analysis, UPS & DOWNS keeps a vigilant eye on market trends, economic indicators, and news events that could impact your investments. Our goal is simple: to empower you with the knowledge and tools you need to make informed decisions and stay ahead of the curve in an ever-changing financial landscape</p>
+                <p class="para">Welcome to UPS & DOWNS: Your personal finance advisor, your AI companion dedicated to navigating the volatile seas of trading and personal finance. Whether you're a seasoned investor or just dipping your toes into the world of finance, UPS & DOWNS is here to provide insightful guidance and actionable advice tailored to your unique financial goals and risk tolerance. Through cutting-edge AI algorithms and real-time market analysis, UPS & DOWNS keeps a vigilant eye on market trends, economic indicators, and news events that could impact your investments. Our goal is simple: to empower you with the knowledge and tools you need to make informed decisions and stay ahead of the curve in an ever-changing financial landscape.</p>
               </div>
               <div id="chart">
                 <VueApexCharts
@@ -134,6 +134,7 @@ h1 {
   display: flex;
   float: right;
   margin-right: 60px;
+  margin-bottom: 30px;
 }
 
 #parent {
