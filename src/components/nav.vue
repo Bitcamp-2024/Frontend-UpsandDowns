@@ -40,8 +40,8 @@ async function logOut() {
             <RouterLink to="/"><img src="../assets/logo.jpg"></RouterLink>
         </div>
         <div id="noneLogo">
-            <RouterLink to="/" class="link">Home🏠</RouterLink>
-            <RouterLink to="/about" class="link">About👤</RouterLink>
+            <RouterLink to="/" class="link">HOME 🏠</RouterLink>
+            <RouterLink to="/about" class="link">ABOUT 👤</RouterLink>
             <div id="buttonGroup" v-if="authUserStore().authenticated === false">
                 <n-button class="button" color="#7c3aed" @click="goToSignUp">SIGN UP</n-button>
                 <n-button class="button" color="#7c3aed" @click="goToLogin">LOG IN</n-button>
