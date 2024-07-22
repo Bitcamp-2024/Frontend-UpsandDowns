@@ -13,6 +13,7 @@
       </select>
       <h1 id="header">Chart Dashboard</h1><span id="Special">$</span><span id="nSpecial">{{ searchTerm.toUpperCase() }}</span>
       <n-button id="watchlist-btn" @click="addToWatchList">ADD TO WATCHLIST</n-button>
+      <p id="error-message">{{ message }}</p>
     </header>
     <div>
       <VueApexCharts
@@ -22,25 +23,33 @@
       :series="series"
       ></VueApexCharts>
     </div>
-    <p id="error-message">{{ message }}</p>
     <div>
       <n-button id="predict" @click="displayPredictions">Let's See the Future! 👽</n-button>
     </div>
     <div>
       <VueApexCharts
+      ref="chartRef"
+      :key="chartKey"
       width="1200"
       type="line"
       :options="buyChartOptions"
       :series="buySeriesOptions"
+      v-show=chartDisplay
+      id="predict-chart"
       ></VueApexCharts>
     </div>
+    <p id="predict-error-message">{{ predictErrorMessage }}</p>
     <p id="buy-msg">{{ buyMessage }}</p>
   </div>
 </template>
 
 <script setup>
-import { ref } from 'vue';
+import { nextTick, ref } from 'vue';
+import { useRouter } from 'vue-router';
 import VueApexCharts from "vue3-apexcharts";
+import { authUserStore } from '../stores.js';
+
+let router = useRouter();
 
 const searchTerm = ref('');
 const selectedInterval = ref('6mo'); // default is 6 months
@@ -48,11 +57,23 @@ const chartOptions = ref({});
 const series = ref([]);
 const message = ref('');
 
+const chartDisplay = ref(false);
+const chartKey = ref(0); // force re-render
+const chartRef = ref(null); // prediction chart reference
 const buyChartOptions = ref({});
 const buySeriesOptions = ref([]);
-const buyMessage = ref('')
+const buyMessage = ref('');
+const predictErrorMessage = ref('');
 
-async function addToWatchlist() {
+async function addToWatchList() {
+  message.value = '';
+  const testResponse = await fetch(`/stock/${searchTerm.value}`)
+  const json = await testResponse.json();
+  console.log(json, json.error);
+  if (json.error) {
+    message.value = json.message;
+    return;
+  }
   const response = await fetch('/userupdate', {
     method: 'POST',
     headers: {
@@ -63,11 +84,11 @@ async function addToWatchlist() {
   });
   const data = await response.json();
   if (data.errorCode) {
-    console.log(data.error);
+    message.value = data.error;
     return;
   }
   if (data.success) {
-    authUserStore.Login();
+    authUserStore().Login();
     router.push(data.redirect);
   }
 }
@@ -75,6 +96,15 @@ async function addToWatchlist() {
 
 async function displayPredictions() {
   buyMessage.value = '';
+  predictErrorMessage.value = '';
+  chartDisplay.value = false;
+  const testResponse = await fetch(`/stock/${searchTerm.value}`)
+  const json = await testResponse.json()
+  let testData = json.data;
+  if (!testData) {
+    predictErrorMessage.value = json.message;
+    return;
+  }
   const response = await fetch('/runmodel', {
     method: 'POST',
     headers: {
@@ -84,53 +114,69 @@ async function displayPredictions() {
     body: JSON.stringify({ ticker: searchTerm.value })
   });
   const data = await response.json();
-  if (data.errorCode) {
-    console.log(data.error);
-    return;
-  }
-  if (!data.success) {
+  if (data.errorCode || !data.success) {
+    predictErrorMessage.value = data.message ?? 'Model failed. Please try again later.';
     return;
   }
   // console.log(data);
+  console.log(data);
   const body = JSON.parse(data.body);
   console.log(body);
   buyMessage.value = `${searchTerm.value}: ${body.recommendation}`; // "buy" or something else]
   console.log(body.df_indicators);
-  const sma20 = body.df_indicators.SMA20
+  const sma20 = body.df_indicators.SMA20;
   const sma50 = body.df_indicators.SMA50;
-  console.log(sma20);
-  console.log(sma50);
-  buySeriesOptions.value = [{
+  buySeriesOptions.value = [
+    {
       name: 'SMA20',
-      data: Object.values(sma20)
-    },{
+      data: Object.entries(sma20).map(([date, value]) => ({
+        x: date,
+        y: value
+      }))
+    },
+    {
       name: 'SMA50',
-      data: Object.values(sma50)
-    }];
-    buyChartOptions.value = {
-      chart: {
-        type: 'line',
-        height: 1200
+      data: Object.entries(sma50).map(([date, value]) => ({
+        x: date,
+        y: value
+      }))
+    }
+  ];
+  buyChartOptions.value = {
+    chart: {
+      type: 'line',
+      height: 1200,
+      zoom: {
+        enabled: true
       },
+      background: 'rgba(0,0,0,0.0)'
+    },
+    title: {
+      text: 'SMA20 & SMA50',
+    },
+    theme: {
+      mode: 'dark'
+    },
+    xaxis: {
+      type: 'numeric',
+      tickAmount: 20
+    },
+    yaxis: {
       title: {
-        text: 'SMA20 & SMA50',
+        text: `${searchTerm.value} Stock Prices`
       },
-      xaxis: {
-        type: 'datetime',
-        title: {
-          text: ''
-        }
-      },
-      yaxis: {
-        title: {
-          text: `${searchTerm.value} Stock Prices`
-        },
-        tooltip: {
-          enabled: true
-        }
-      },
-      stepSize: 100
+      tooltip: {
+        enabled: true
+      }
+    },
   };
+  console.log(buyChartOptions.value);
+  chartDisplay.value = true;
+  await nextTick();
+  const resetZoom = document.getElementById('predict-chart').querySelector('.apexcharts-reset-icon');
+  if (resetZoom) {
+    resetZoom.click();
+  }
 }
 
 const rangeToDays = (range) => {
@@ -155,6 +201,7 @@ const fetchStockData = async () => {
     const json = await response.json()
     let data = json.data;
     if (!data) {
+      message.value = json.message;
       return;
     }
     data = data.quotes.slice(-1 * rangeToDays(selectedInterval.value));
@@ -170,8 +217,13 @@ const fetchStockData = async () => {
         mode: 'dark'
       },
       xaxis: {
-        type: 'datetime',
-        stepSize: getStepSize(rangeToDays(selectedInterval.value))
+        type: 'numeric', // Set type to numeric
+        tickAmount: Math.min(rangeToDays(selectedInterval.value), 60),
+        labels: {
+          formatter: function(value) {
+            return new Date(value).toLocaleDateString(); // Format labels as dates
+          }
+        }
       },
       yaxis: {
         tooltip: {
@@ -179,6 +231,9 @@ const fetchStockData = async () => {
         }
       },
     };
+    console.log(data.map(elm => {
+      return { x : elm.date.slice(0,10), y: [elm.open, elm.high, elm.low, elm.close] }
+    }));
     series.value = [{
       data: data.map(elm => {
         return { x : elm.date.slice(0,10), y: [elm.open, elm.high, elm.low, elm.close] }
@@ -186,7 +241,6 @@ const fetchStockData = async () => {
     }];
   } catch (err) {
     console.log(err);
-    message.value = data.message;
   }
 };
 </script>
@@ -242,6 +296,16 @@ button:hover {
 #error-message {
   color: red;
   font-weight: bold;
+  display: inline-block;
+  margin-left: 7px;
+}
+
+#predict-error-message {
+  color: red;
+  font-weight: bold;
+  display: block;
+  text-align: center;
+  transform: translateY(-15px);
 }
 
 select {
